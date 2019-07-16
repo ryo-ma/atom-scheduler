@@ -1,0 +1,2 @@
+agency_id,agency_name,agency_url,agency_timezone,agency_lang,agency_phone,agency_fare_url,agency_email
+6380001020359,会津バス,https://www.aizubus.com/,Asia/Tokyo,ja,0242-22-5560,,

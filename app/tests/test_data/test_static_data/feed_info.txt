@@ -1,0 +1,2 @@
+feed_publisher_name,feed_publisher_url,feed_lang,feed_start_date,feed_end_date,feed_version
+ジョルダン株式会社,http://www.jorudan.co.jp,ja,20190501,20191031,2.0
