@@ -54,10 +54,30 @@ def update_entity(download_info):
             'id_rule': lambda x: f"{x['service_id']}_{x['date']}"
         },
         {
-            'filename': 'shapes.txt',
-            'type': 'shape',
-            'id_rule': lambda x: f"{x['shape_id']}_{x['shape_pt_sequence']}"
-        }
+            'filename': 'fare_attributes.txt',
+            'type': 'fare_attribute',
+            'id_rule': lambda x: f"{x['fare_id']}"
+        },
+        {
+            'filename': 'fare_rules.txt',
+            'type': 'fare_rule',
+            'id_rule': lambda x: f"{x['fare_id']}_{x['route_id']}"
+        },
+        {
+            'filename': 'pass_attributes.txt',
+            'type': 'pass_attribute',
+            'id_rule': lambda x: f"{x['pass_id']}"
+        },
+        # {
+        #     'filename': 'pass_rules.txt',
+        #     'type': 'calendar_date',
+        #     'id_rule': lambda x: f"{x['pass_id']}_{x['route_id']}"
+        # },
+        # {
+        #     'filename': 'shapes.txt',
+        #     'type': 'shape',
+        #     'id_rule': lambda x: f"{x['shape_id']}_{x['shape_pt_sequence']}"
+        # }
     ]
     entity_creator = EntityCreator()
 
@@ -98,4 +118,3 @@ def update_entity(download_info):
 if __name__ == '__main__':
     for download_info in download_current_all_data():
         update_entity(download_info)
-

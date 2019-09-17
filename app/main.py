@@ -5,6 +5,7 @@ from src.lib.ptd_hs_client import PTDHSClient
 from src.utils import const
 from src.lib.entity_creator import EntityCreator
 from src.lib.orion import update_entities
+from src.utils.split_list import split_list
 from logging import getLogger
 import logging.config
 
@@ -31,20 +32,25 @@ def update_vehicle_position(agency_id):
         entities = EntityCreator().create_vehicle_position(vehicle_position_json)
         data = {'actionType': 'APPEND',
                 'entities': entities}
-        static_agency_id = const.AGENCY_ID_TABLE[agency_id]
-        update_entities(f'/agencies/{static_agency_id}', json.dumps(data))
+        update_entities(f'/agencies/{agency_id}', json.dumps(data))
 
 
 def update_trip_update(agency_id):
     trip_update_json = client.get_trip_update(agency_id).json()
+    post_entities_length = os.environ.get(const.POST_ENTITIES_LENGTH, 3)
     if 'entity' in trip_update_json:
-        id_list = [x['vehicle']['vehicle']['id'] for x in trip_update_json['entity']]
-        # TODO: This method will run update_entities.
+        entities = EntityCreator().create_trip_update(trip_update_json)
+        for splited_entities in split_list(entities, int(post_entities_length)):
+            data = {'actionType': 'APPEND',
+                    'entities': splited_entities}
+            update_entities(f'/agencies/{agency_id}', json.dumps(data))
 
 
 def run_scheduler(agency_id_list):
     for agency_id in agency_id_list:
         update_vehicle_position(agency_id)
+        time.sleep(int(sleep_time))
+        update_trip_update(agency_id)
         time.sleep(int(sleep_time))
 
 

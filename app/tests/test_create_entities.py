@@ -11,6 +11,12 @@ class TestCreateEntities:
             entities = EntityCreator().create_vehicle_position(json_data)
             assert len(entities) == 35
 
+    def test_create_trip_update(self):
+        with open('./tests/test_data/test_trip_update.json', 'r') as f:
+            json_data = json.load(f)
+            entities = EntityCreator().create_trip_update(json_data)
+            assert len(entities) == 677
+
     def test_create_agency(self):
         with open('./tests/test_data/test_static_data/agency.txt', 'r') as agency_f:
             with open('./tests/test_data/test_static_data/agency_jp.txt', 'r') as agency_jp_f:
@@ -109,3 +115,51 @@ class TestCreateEntities:
             assert len(entities[0]) == 7
             assert entities[0]['id'] == 'SP000001_0'
             assert entities[0]['type'] == 'shape'
+
+    def test_create_fare_attributes(self):
+        with open('./tests/test_data/test_static_data/fare_attributes.txt', 'r') as f:
+            fare_attribute_list = list(csv.DictReader(f))
+            entities = EntityCreator().create_static_entity(fare_attribute_list,
+                                                            'fare_attribute',
+                                                            lambda x: f"{x['fare_id']}")
+
+            assert len(entities) == 226
+            assert len(entities[0]) == 8
+            assert entities[0]['id'] == 'F07020002100'
+            assert entities[0]['type'] == 'fare_attribute'
+
+    def test_create_fare_rules(self):
+        with open('./tests/test_data/test_static_data/fare_rules.txt', 'r') as f:
+            fare_rules_list = list(csv.DictReader(f))
+            entities = EntityCreator().create_static_entity(fare_rules_list,
+                                                            'fare_attribute',
+                                                            lambda x: f"{x['fare_id']}")
+
+            assert len(entities) == 63454
+            assert len(entities[0]) == 7
+            assert entities[0]['id'] == 'F07020002100'
+            assert entities[0]['type'] == 'fare_attribute'
+
+    def test_create_pass_attributes(self):
+        with open('./tests/test_data/test_static_data/pass_attributes.txt', 'r') as f:
+            pass_attributes_list = list(csv.DictReader(f))
+            entities = EntityCreator().create_static_entity(pass_attributes_list,
+                                                            'pass_attribute',
+                                                            lambda x: f"{x['pass_id']}")
+
+            assert len(entities) == 448
+            assert len(entities[0]) == 6
+            assert entities[0]['id'] == 'P070200882001'
+            assert entities[0]['type'] == 'pass_attribute'
+
+    def test_create_pass_rules(self):
+        with open('./tests/test_data/test_static_data/pass_rules.txt', 'r') as f:
+            pass_rules_list = list(csv.DictReader(f))
+            entities = EntityCreator().create_static_entity(pass_rules_list,
+                                                            'pass_rule',
+                                                            lambda x: f"{x['pass_id']}_{x['route_id']}")
+
+            assert len(entities) == 286244
+            assert len(entities[0]) == 6
+            assert entities[0]['id'] == 'P070200882001_R070200001000000'
+            assert entities[0]['type'] == 'pass_rule'
