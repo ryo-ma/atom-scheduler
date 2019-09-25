@@ -25,7 +25,7 @@ class EntityCreator:
                       'latitude': self.create_attribute(position['latitude'], 'Number'),
                       'longitude': self.create_attribute(position['longitude'], 'Number'),
                       'current_status': self.create_attribute(x['vehicle']['currentStatus']),
-                      'timestamp': self.create_attribute(x['vehicle']['timestamp'], 'Number'),
+                      'timestamp': self.create_attribute(int(x['vehicle']['timestamp']), 'Number'),
                       'stop_id': self.create_attribute(x['vehicle']['stopId']),
                       }
             if 'bearing' in position:
